@@ -21,6 +21,9 @@ import (
 	"crypto/ecdsa"
 	"encoding/hex"
 	"fmt"
+	"log"
+	"math/big"
+
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	ethComm "github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
@@ -37,8 +40,6 @@ import (
 	"github.com/polynetwork/eth-contracts/go_abi/ongx_abi"
 	"github.com/polynetwork/eth-contracts/go_abi/ontx_abi"
 	"github.com/polynetwork/poly-io-test/config"
-	"log"
-	"math/big"
 )
 
 type EInvoker struct {
@@ -93,7 +94,7 @@ func (ethInvoker *EInvoker) DeployEthChainDataContract() (ethComm.Address, *eccd
 		return ethComm.Address{}, nil, fmt.Errorf("DeployEthChainDataContract, err: %v", err)
 	}
 	contractAddress, tx, contract, err := eccd_abi.DeployEthCrossChainData(auth,
-		ethInvoker.ETHUtil.GetEthClient(), auth.From)
+		ethInvoker.ETHUtil.GetEthClient())
 	if err != nil {
 		return ethComm.Address{}, nil, fmt.Errorf("DeployEthChainDataContract, err: %v", err)
 	}
@@ -108,7 +109,7 @@ func (ethInvoker *EInvoker) DeployECCMContract(eccdAddress string, id uint64) (e
 	}
 	address := ethComm.HexToAddress(eccdAddress)
 	contractAddress, tx, contract, err := eccm_abi.DeployEthCrossChainManager(auth,
-		ethInvoker.ETHUtil.GetEthClient(), address, auth.From, id)
+		ethInvoker.ETHUtil.GetEthClient(), address, id)
 	if err != nil {
 		return ethComm.Address{}, nil, fmt.Errorf("DeployECCMContract, err: %v", err)
 	}
@@ -120,7 +121,7 @@ func (ethInvoker *EInvoker) DeployECCMPContract(eccmAddress string) (ethComm.Add
 	auth, _ := ethInvoker.MakeSmartContractAuth()
 	address := ethComm.HexToAddress(eccmAddress)
 	contractAddress, tx, contract, err := eccmp_abi.DeployEthCrossChainManagerProxy(auth,
-		ethInvoker.ETHUtil.GetEthClient(), address, auth.From)
+		ethInvoker.ETHUtil.GetEthClient(), address)
 	if err != nil {
 		return ethComm.Address{}, nil, fmt.Errorf("DeployECCMPContract, err: %v", err)
 	}
