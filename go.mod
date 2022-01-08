@@ -37,8 +37,8 @@ require (
 )
 
 replace (
+	github.com/ethereum/go-ethereum => github.com/ethereum/go-ethereum v1.9.18
 	github.com/go-kit/kit v0.10.0 => github.com/go-kit/kit v0.8.0
 	github.com/polynetwork/eth-contracts => github.com/zouxyan/eth-contracts v0.0.0-20210115072359-e4cac6edc20c
 	github.com/polynetwork/poly => github.com/polynetwork/poly v0.0.0-20210927034449-4797bc7a54e0
-
 )

@@ -25,6 +25,11 @@ import (
 	"encoding/pem"
 	"flag"
 	"fmt"
+	"io/ioutil"
+	"math/big"
+	"os"
+	"strings"
+
 	"github.com/btcsuite/btcd/wire"
 	types3 "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum"
@@ -34,7 +39,7 @@ import (
 	"github.com/joeqian10/neo-gogogo/helper/io"
 	"github.com/joeqian10/neo-gogogo/rpc"
 	"github.com/ontio/ontology-crypto/keypair"
-	"github.com/ontio/ontology-go-sdk"
+	ontology_go_sdk "github.com/ontio/ontology-go-sdk"
 	common2 "github.com/ontio/ontology/common"
 	"github.com/ontio/ontology/core/types"
 	"github.com/ontio/ontology/smartcontract/service/native/cross_chain/header_sync"
@@ -42,7 +47,7 @@ import (
 	utils2 "github.com/ontio/ontology/smartcontract/service/native/utils"
 	"github.com/polynetwork/eth-contracts/go_abi/eccm_abi"
 	"github.com/polynetwork/eth-contracts/go_abi/eccmp_abi"
-	"github.com/polynetwork/poly-go-sdk"
+	poly_go_sdk "github.com/polynetwork/poly-go-sdk"
 	"github.com/polynetwork/poly-io-test/chains/btc"
 	cosmos2 "github.com/polynetwork/poly-io-test/chains/cosmos"
 	"github.com/polynetwork/poly-io-test/chains/eth"
@@ -55,7 +60,7 @@ import (
 	"github.com/polynetwork/poly-io-test/log"
 	"github.com/polynetwork/poly-io-test/testcase"
 	"github.com/polynetwork/poly/common"
-	"github.com/polynetwork/poly/consensus/vbft/config"
+	vconfig "github.com/polynetwork/poly/consensus/vbft/config"
 	"github.com/polynetwork/poly/native/service/governance/node_manager"
 	"github.com/polynetwork/poly/native/service/governance/relayer_manager"
 	"github.com/polynetwork/poly/native/service/governance/side_chain_manager"
@@ -65,10 +70,6 @@ import (
 	"github.com/tendermint/tendermint/rpc/client/http"
 	types2 "github.com/tendermint/tendermint/types"
 	"github.com/tjfoc/gmsm/sm2"
-	"io/ioutil"
-	"math/big"
-	"os"
-	"strings"
 )
 
 var (
@@ -526,6 +527,7 @@ func SyncEthGenesisHeader(poly *poly_go_sdk.PolySdk, accArr []*poly_go_sdk.Accou
 	if err != nil {
 		panic(err)
 	}
+	log.Info("eth raw-hash:%s", hdr.Hash().String())
 	txhash, err := poly.Native.Hs.SyncGenesisHeader(config.DefConfig.EthChainID, raw, accArr)
 	if err != nil {
 		if strings.Contains(err.Error(), "had been initialized") {
