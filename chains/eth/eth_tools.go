@@ -23,19 +23,19 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/polynetwork/eth-contracts/go_abi/eccm_abi"
-	"github.com/polynetwork/poly-io-test/log"
 	"io/ioutil"
 	"math/big"
 	"net/http"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/ethereum/go-ethereum/accounts"
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/polynetwork/eth-contracts/go_abi/eccm_abi"
+	"github.com/polynetwork/poly-io-test/log"
 )
 
 type ETHTools struct {
@@ -83,9 +83,9 @@ type BlockReq struct {
 }
 
 type BlockRep struct {
-	JsonRPC string        `json:"jsonrpc"`
-	Result  *types.Header `json:"result"`
-	Id      uint          `json:"id"`
+	JsonRPC string  `json:"jsonrpc"`
+	Result  *Header `json:"result"`
+	Id      uint    `json:"id"`
 }
 
 func NewEthTools(url string) *ETHTools {
@@ -135,7 +135,31 @@ func (self *ETHTools) GetNodeHeight() (uint64, error) {
 	}
 }
 
-func (self *ETHTools) GetBlockHeader(height uint64) (*types.Header, error) {
+func (self *ETHTools) handleBlockHeader(height uint64) bool {
+	// ethclient.Client
+	ethereumsdk, err := ethclient.Dial("")
+	hdr, err := ethereumsdk.HeaderByNumber(context.Background(), big.NewInt(int64(height)))
+	if err != nil {
+		log.Errorf("handleBlockHeader - GetNodeHeader on height :%d failed", height)
+		return false
+	}
+
+	log.Infof("EthereumManager handleNewBlock - hdr:%s", hdr.Hash().String())
+
+	// log.Infof("EthereumManager handleNewBlock - height: %s,hdr:%s", height, hdr.ReceiptHash)
+	// log.Infof("EthereumManager handleNewBlock - height: %s,hdr:%s", height, hdr)
+	// rawHdr, _ := hdr.MarshalJSON()
+	// raw, _ := this.polySdk.GetStorage(autils.HeaderSyncContractAddress.ToHexString(),
+	// 	append(append([]byte(scom.MAIN_CHAIN), autils.GetUint64Bytes(this.config.ETHConfig.SideChainId)...), autils.GetUint64Bytes(height)...))
+
+	// log.Infof("EthereumManager handleNewBlock - raw: %s,hdr:%s", raw, hdr)
+	// if len(raw) == 0 || !bytes.Equal(raw, hdr.Hash().Bytes()) {
+	// 	this.header4sync = append(this.header4sync, rawHdr)
+	// }
+	return true
+}
+
+func (self *ETHTools) GetBlockHeader(height uint64) (*Header, error) {
 	params := []interface{}{fmt.Sprintf("0x%x", height), true}
 	req := &BlockReq{
 		JsonRpc: "2.0",
