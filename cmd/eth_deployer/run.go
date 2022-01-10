@@ -359,21 +359,21 @@ func SetOtherLockProxy(invoker *eth.EInvoker) {
 func SetUpEthContracts() {
 	invoker := eth.NewEInvoker()
 	SetupETH(invoker)
-	if config.DefConfig.EthErc20 != "" {
-		SetupERC20(invoker)
-	}
-	if config.DefConfig.OntLockProxy != "" {
-		SetupOntAsset(invoker)
-	}
-	if config.DefConfig.EthWBTC != "" {
-		SetupWBTC(invoker)
-	}
-	if config.DefConfig.EthDai != "" {
-		SetupDAI(invoker)
-	}
-	if config.DefConfig.EthUSDT != "" {
-		SetupUSDT(invoker)
-	}
+	// if config.DefConfig.EthErc20 != "" {
+	// 	SetupERC20(invoker)
+	// }
+	// if config.DefConfig.OntLockProxy != "" {
+	// 	SetupOntAsset(invoker)
+	// }
+	// if config.DefConfig.EthWBTC != "" {
+	// 	SetupWBTC(invoker)
+	// }
+	// if config.DefConfig.EthDai != "" {
+	// 	SetupDAI(invoker)
+	// }
+	// if config.DefConfig.EthUSDT != "" {
+	// 	SetupUSDT(invoker)
+	// }
 	//SetupUSDC(invoker)
 	SetOtherLockProxy(invoker)
 }
