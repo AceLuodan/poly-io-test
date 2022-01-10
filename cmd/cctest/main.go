@@ -19,22 +19,19 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/polynetwork/poly-go-sdk"
-	"github.com/polynetwork/poly-io-test/chains/btc"
-	"github.com/polynetwork/poly-io-test/chains/cosmos"
-	"github.com/polynetwork/poly-io-test/chains/eth"
-	"github.com/polynetwork/poly-io-test/chains/fabric"
-	"github.com/polynetwork/poly-io-test/chains/fisco"
-	"github.com/polynetwork/poly-io-test/chains/neo"
-	"github.com/polynetwork/poly-io-test/chains/ont"
-	"github.com/polynetwork/poly-io-test/config"
-	"github.com/polynetwork/poly-io-test/log"
-	_ "github.com/polynetwork/poly-io-test/testcase"
-	"github.com/polynetwork/poly-io-test/testframework"
 	"os"
 	"os/signal"
 	"strings"
 	"syscall"
+
+	poly_go_sdk "github.com/polynetwork/poly-go-sdk"
+	"github.com/polynetwork/poly-io-test/chains/btc"
+	"github.com/polynetwork/poly-io-test/chains/eth"
+	"github.com/polynetwork/poly-io-test/chains/fabric"
+	"github.com/polynetwork/poly-io-test/config"
+	"github.com/polynetwork/poly-io-test/log"
+	_ "github.com/polynetwork/poly-io-test/testcase"
+	"github.com/polynetwork/poly-io-test/testframework"
 )
 
 var (
@@ -69,23 +66,23 @@ func main() {
 	//if err != nil {
 	//	log.Errorf("failed to new a btc invoker, do not test cases about BTC: %v", err)
 	//}
-	ontInvoker, err := ont.NewOntInvoker(config.DefConfig.OntJsonRpcAddress, config.DefConfig.OntContractsAvmPath,
-		config.DefConfig.OntWallet, config.DefConfig.OntWalletPassword)
-	if err != nil {
-		log.Warnf("failed to new a ont invoker, do not test cases about ONT: %v", err)
-	}
-	cmInvoker, err := cosmos.NewCosmosInvoker()
-	if err != nil {
-		log.Warnf("failed to new a cosmos invoker, do not test cases about COSMOS: %v", err)
-	}
-	neoInvoker, err := neo.NewNeoInvoker()
-	if err != nil {
-		log.Warnf("failed to new a neo invoker, do not test cases about NEO: %v", err)
-	}
-	fiscoInvoker, err := fisco.NewFiscoInvoker()
-	if err != nil {
-		log.Warnf("failed to new a fisco invoker, do not test cases about fisco: %v", err)
-	}
+	// ontInvoker, err := ont.NewOntInvoker(config.DefConfig.OntJsonRpcAddress, config.DefConfig.OntContractsAvmPath,
+	// 	config.DefConfig.OntWallet, config.DefConfig.OntWalletPassword)
+	// if err != nil {
+	// 	log.Warnf("failed to new a ont invoker, do not test cases about ONT: %v", err)
+	// }
+	// cmInvoker, err := cosmos.NewCosmosInvoker()
+	// if err != nil {
+	// 	log.Warnf("failed to new a cosmos invoker, do not test cases about COSMOS: %v", err)
+	// }
+	// neoInvoker, err := neo.NewNeoInvoker()
+	// if err != nil {
+	// 	log.Warnf("failed to new a neo invoker, do not test cases about NEO: %v", err)
+	// }
+	// fiscoInvoker, err := fisco.NewFiscoInvoker()
+	// if err != nil {
+	// 	log.Warnf("failed to new a fisco invoker, do not test cases about fisco: %v", err)
+	// }
 	fabricInvoker, err := fabric.NewFabricInvoker()
 	if err != nil {
 		log.Warnf("failed to new a fabric invoker, do not test cases about fabric: %v", err)
@@ -98,10 +95,10 @@ func main() {
 	testframework.TFramework.SetRcSdk(rcSdk)
 	testframework.TFramework.SetEthInvoker(ethInvoker)
 	//testframework.TFramework.SetBtcInvoker(btcInvoker)
-	testframework.TFramework.SetOntInvoker(ontInvoker)
-	testframework.TFramework.SetCosmosInvoker(cmInvoker)
-	testframework.TFramework.SetNeoInvoker(neoInvoker)
-	testframework.TFramework.SetFiscoInvoker(fiscoInvoker)
+	// testframework.TFramework.SetOntInvoker(ontInvoker)
+	// testframework.TFramework.SetCosmosInvoker(cmInvoker)
+	// testframework.TFramework.SetNeoInvoker(neoInvoker)
+	// testframework.TFramework.SetFiscoInvoker(fiscoInvoker)
 	testframework.TFramework.SetFabricInvoker(fabricInvoker)
 
 	//Start run test case

@@ -93,6 +93,8 @@ func (ethInvoker *EInvoker) DeployEthChainDataContract() (ethComm.Address, *eccd
 	if err != nil {
 		return ethComm.Address{}, nil, fmt.Errorf("DeployEthChainDataContract, err: %v", err)
 	}
+	// contractAddress, tx, contract, err := eccd_abi.DeployEthCrossChainData(auth,
+	// 	ethInvoker.ETHUtil.GetEthClient(), auth.From)
 	contractAddress, tx, contract, err := eccd_abi.DeployEthCrossChainData(auth,
 		ethInvoker.ETHUtil.GetEthClient())
 	if err != nil {
@@ -179,7 +181,7 @@ func (ethInvoker *EInvoker) BindAssetHash(lockProxyAddr, fromAssetHash, toAssetH
 			return nil, err
 		}
 		toAddr = addr[:]
-	} else if uint64(toChainId) == config.DefConfig.CMCrossChainId {
+	} else if uint64(toChainId) == config.DefConfig.CMCrossChainId || uint64(toChainId) == config.DefConfig.FabricChainID {
 		toAddr = []byte(toAssetHash)
 	} else if uint64(toChainId) == ethInvoker.TConfiguration.FiscoChainID {
 		toAddr = ethComm.HexToAddress(toAssetHash).Bytes()

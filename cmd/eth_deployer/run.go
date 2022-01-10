@@ -17,11 +17,10 @@
 package main
 
 import (
-	"encoding/hex"
 	"flag"
 	"fmt"
+
 	common2 "github.com/ethereum/go-ethereum/common"
-	"github.com/ontio/ontology/common"
 	"github.com/polynetwork/poly-io-test/chains/eth"
 	"github.com/polynetwork/poly-io-test/config"
 )
@@ -246,21 +245,21 @@ func SetupOntAsset(invoker *eth.EInvoker) {
 
 func SetupETH(ethInvoker *eth.EInvoker) {
 	ethNativeAddr := "0x0000000000000000000000000000000000000000"
-	if config.DefConfig.OntEth != "" {
-		tx, err := ethInvoker.BindAssetHash(config.DefConfig.EthLockProxy, ethNativeAddr, config.DefConfig.OntEth, config.DefConfig.OntChainID, 0)
-		if err != nil {
-			panic(fmt.Errorf("SetupETH2ONT, failed to bind asset hash: %v", err))
-		}
-		hash := tx.Hash()
-		fmt.Printf("binding ethx of ontology on ethereum: ( txhash: %s )\n", hash.String())
-	}
+	// if config.DefConfig.OntEth != "" {
+	// 	tx, err := ethInvoker.BindAssetHash(config.DefConfig.EthLockProxy, ethNativeAddr, config.DefConfig.OntEth, config.DefConfig.OntChainID, 0)
+	// 	if err != nil {
+	// 		panic(fmt.Errorf("SetupETH2ONT, failed to bind asset hash: %v", err))
+	// 	}
+	// 	hash := tx.Hash()
+	// 	fmt.Printf("binding ethx of ontology on ethereum: ( txhash: %s )\n", hash.String())
+	// }
 
-	tx, err := ethInvoker.BindAssetHash(config.DefConfig.EthLockProxy, ethNativeAddr, config.CM_ETHX, config.DefConfig.CMCrossChainId, 0)
-	if err != nil {
-		panic(fmt.Errorf("SetupETH2ONT, failed to bind asset hash: %v", err))
-	}
-	hash := tx.Hash()
-	fmt.Printf("binding ethx of cosmos on ethereum: ( txhash: %s )\n", hash.String())
+	// tx, err := ethInvoker.BindAssetHash(config.DefConfig.EthLockProxy, ethNativeAddr, config.CM_ETHX, config.DefConfig.CMCrossChainId, 0)
+	// if err != nil {
+	// 	panic(fmt.Errorf("SetupETH2ONT, failed to bind asset hash: %v", err))
+	// }
+	// hash := tx.Hash()
+	// fmt.Printf("binding ethx of cosmos on ethereum: ( txhash: %s )\n", hash.String())
 
 	if config.DefConfig.FiscoEth != "" {
 		tx, err := ethInvoker.BindAssetHash(config.DefConfig.EthLockProxy, ethNativeAddr, config.DefConfig.FiscoEth, config.DefConfig.FiscoChainID, 0)
@@ -270,6 +269,15 @@ func SetupETH(ethInvoker *eth.EInvoker) {
 		hash := tx.Hash()
 		fmt.Printf("binding eth of fisco on ethereum: ( txhash: %s )\n", hash.String())
 	}
+
+	if config.DefConfig.FabricPEth != "" {
+		tx, err := ethInvoker.BindAssetHash(config.DefConfig.EthLockProxy, ethNativeAddr, config.DefConfig.FabricPEth, config.DefConfig.FabricChainID, 0)
+		if err != nil {
+			panic(fmt.Errorf("SetupFabricPEth, failed to bind asset hash: %v", err))
+		}
+		hash := tx.Hash()
+		fmt.Printf("binding eth of FabricPEth on ethereum: ( txhash: %s )\n", hash.String())
+	}
 }
 
 func SetOtherLockProxy(invoker *eth.EInvoker) {
@@ -277,56 +285,74 @@ func SetOtherLockProxy(invoker *eth.EInvoker) {
 	if err != nil {
 		panic(fmt.Errorf("failed to MakeLockProxy: %v", err))
 	}
-	if config.DefConfig.OntLockProxy != "" {
-		auth, err := invoker.MakeSmartContractAuth()
-		if err != nil {
-			panic(fmt.Errorf("failed to get auth: %v", err))
-		}
-		other, err := common.AddressFromHexString(config.DefConfig.OntLockProxy)
-		if err != nil {
-			panic(fmt.Errorf("failed to AddressFromHexString: %v", err))
-		}
-		tx, err := contract.BindProxyHash(auth, config.DefConfig.OntChainID, other[:])
-		if err != nil {
-			panic(fmt.Errorf("failed to bind proxy: %"))
-		}
-		hash := tx.Hash()
-		invoker.ETHUtil.WaitTransactionConfirm(hash)
-		fmt.Printf("binding ont proxy: ( txhash: %s )\n", hash.String())
-	}
+	// if config.DefConfig.OntLockProxy != "" {
+	// 	auth, err := invoker.MakeSmartContractAuth()
+	// 	if err != nil {
+	// 		panic(fmt.Errorf("failed to get auth: %v", err))
+	// 	}
+	// 	other, err := common.AddressFromHexString(config.DefConfig.OntLockProxy)
+	// 	if err != nil {
+	// 		panic(fmt.Errorf("failed to AddressFromHexString: %v", err))
+	// 	}
+	// 	tx, err := contract.BindProxyHash(auth, config.DefConfig.OntChainID, other[:])
+	// 	if err != nil {
+	// 		panic(fmt.Errorf("failed to bind proxy: %"))
+	// 	}
+	// 	hash := tx.Hash()
+	// 	invoker.ETHUtil.WaitTransactionConfirm(hash)
+	// 	fmt.Printf("binding ont proxy: ( txhash: %s )\n", hash.String())
+	// }
 
-	if config.DefConfig.CMLockProxy != "" {
+	// if config.DefConfig.CMLockProxy != "" {
+	// 	auth, err := invoker.MakeSmartContractAuth()
+	// 	if err != nil {
+	// 		panic(fmt.Errorf("failed to get auth: %v", err))
+	// 	}
+	// 	raw, err := hex.DecodeString(config.DefConfig.CMLockProxy)
+	// 	if err != nil {
+	// 		panic(fmt.Errorf("failed to decode: %v", err))
+	// 	}
+	// 	tx, err := contract.BindProxyHash(auth, config.DefConfig.CMCrossChainId, raw)
+	// 	if err != nil {
+	// 		panic(fmt.Errorf("failed to bind COSMOS proxy: %v", err))
+	// 	}
+	// 	hash := tx.Hash()
+	// 	invoker.ETHUtil.WaitTransactionConfirm(hash)
+	// 	fmt.Printf("binding cosmos proxy: ( txhash: %s )\n", hash.String())
+	// }
+
+	// if config.DefConfig.FiscoLockProxy != "" {
+	// 	auth, err := invoker.MakeSmartContractAuth()
+	// 	if err != nil {
+	// 		panic(fmt.Errorf("failed to get auth: %v", err))
+	// 	}
+
+	// 	addr := common2.HexToAddress(config.DefConfig.FiscoLockProxy)
+	// 	tx, err := contract.BindProxyHash(auth, config.DefConfig.FiscoChainID, addr.Bytes())
+	// 	if err != nil {
+	// 		panic(fmt.Errorf("failed to bind COSMOS proxy: %v", err))
+	// 	}
+	// 	hash := tx.Hash()
+	// 	invoker.ETHUtil.WaitTransactionConfirm(hash)
+	// 	fmt.Printf("binding fisco proxy: ( txhash: %s )\n", hash.String())
+	// }
+	if config.DefConfig.FabricLockProxy != "" {
 		auth, err := invoker.MakeSmartContractAuth()
 		if err != nil {
 			panic(fmt.Errorf("failed to get auth: %v", err))
 		}
-		raw, err := hex.DecodeString(config.DefConfig.CMLockProxy)
+		// raw, err := hex.DecodeString(config.DefConfig.FabricLockProxy)
+		fmt.Println("get FabricLockProxy: %v", config.DefConfig.FabricLockProxy)
 		if err != nil {
 			panic(fmt.Errorf("failed to decode: %v", err))
 		}
-		tx, err := contract.BindProxyHash(auth, config.DefConfig.CMCrossChainId, raw)
+		tx, err := contract.BindProxyHash(auth, config.DefConfig.FabricChainID, []byte(config.DefConfig.FabricLockProxy))
 		if err != nil {
-			panic(fmt.Errorf("failed to bind COSMOS proxy: %v", err))
+			panic(fmt.Errorf("failed to bind FabricLockProxy proxy: %v", err))
 		}
 		hash := tx.Hash()
 		invoker.ETHUtil.WaitTransactionConfirm(hash)
-		fmt.Printf("binding cosmos proxy: ( txhash: %s )\n", hash.String())
-	}
-
-	if config.DefConfig.FiscoLockProxy != "" {
-		auth, err := invoker.MakeSmartContractAuth()
-		if err != nil {
-			panic(fmt.Errorf("failed to get auth: %v", err))
-		}
-
-		addr := common2.HexToAddress(config.DefConfig.FiscoLockProxy)
-		tx, err := contract.BindProxyHash(auth, config.DefConfig.FiscoChainID, addr.Bytes())
-		if err != nil {
-			panic(fmt.Errorf("failed to bind COSMOS proxy: %v", err))
-		}
-		hash := tx.Hash()
-		invoker.ETHUtil.WaitTransactionConfirm(hash)
-		fmt.Printf("binding fisco proxy: ( txhash: %s )\n", hash.String())
+		fmt.Printf("binding FabricLockProxy proxy: ( txhash: %s )\n", hash.String())
 	}
 }
 
