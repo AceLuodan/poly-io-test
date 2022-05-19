@@ -93,22 +93,22 @@ func DeployETHSmartContract() {
 		panic(err)
 	}
 
-	// lockproxyAddrHex := lockProxyAddr.Hex()
-	// erc20Addr, erc20, err := invoker.DeployERC20()
-	// if err != nil {
-	// 	panic(err)
-	// }
+	lockproxyAddrHex := lockProxyAddr.Hex()
+	erc20Addr, erc20, err := invoker.DeployERC20()
+	if err != nil {
+		panic(err)
+	}
 
-	// total, err := erc20.TotalSupply(nil)
-	// if err != nil {
-	// 	panic(fmt.Errorf("failed to get total supply for erc20: %v", err))
-	// }
-	// auth, _ := invoker.MakeSmartContractAuth()
-	// tx, err := erc20.Approve(auth, lockProxyAddr, total)
-	// if err != nil {
-	// 	panic(fmt.Errorf("failed to approve erc20 to lockproxy: %v", err))
-	// }
-	// invoker.ETHUtil.WaitTransactionConfirm(tx.Hash())
+	total, err := erc20.TotalSupply(nil)
+	if err != nil {
+		panic(fmt.Errorf("failed to get total supply for erc20: %v", err))
+	}
+	auth, _ := invoker.MakeSmartContractAuth()
+	tx, err := erc20.Approve(auth, lockProxyAddr, total)
+	if err != nil {
+		panic(fmt.Errorf("failed to approve erc20 to lockproxy: %v", err))
+	}
+	invoker.ETHUtil.WaitTransactionConfirm(tx.Hash())
 
 	// oep4Addr, _, err := invoker.DeployOEP4(lockproxyAddrHex)
 	// if err != nil {
@@ -124,7 +124,7 @@ func DeployETHSmartContract() {
 	// }
 
 	fmt.Println("=============================ETH info=============================")
-	// fmt.Println("erc20:", erc20Addr.Hex())
+	fmt.Println("erc20:", erc20Addr.Hex())
 	// fmt.Println("ope4:", oep4Addr.Hex())
 	fmt.Println("eccd address:", eccdAddr.Hex())
 	fmt.Println("eccm address:", eccmAddr.Hex())
@@ -134,7 +134,7 @@ func DeployETHSmartContract() {
 	// fmt.Println("ontx proxy address: ", ontxAddr.Hex())
 	fmt.Println("==================================================================")
 
-	// config.DefConfig.EthErc20 = erc20Addr.Hex()
+	config.DefConfig.EthErc20 = erc20Addr.Hex()
 	// config.DefConfig.EthOep4 = oep4Addr.Hex()
 	config.DefConfig.Eccd = eccdAddr.Hex()
 	config.DefConfig.Eccm = eccmAddr.Hex()
@@ -277,6 +277,15 @@ func SetupETH(ethInvoker *eth.EInvoker) {
 		}
 		hash := tx.Hash()
 		fmt.Printf("binding eth of FabricPEth on ethereum: ( txhash: %s )\n", hash.String())
+	}
+	
+	if config.DefConfig.FabricBond != "" {
+		tx, err := ethInvoker.BindAssetHash(config.DefConfig.EthLockProxy, config.DefConfig.EthErc20, config.DefConfig.FabricBond, config.DefConfig.FabricChainID, 0)
+		if err != nil {
+			panic(fmt.Errorf("SetupFabricBond, failed to bind asset hash: %v", err))
+		}
+		hash := tx.Hash()
+		fmt.Printf("binding erc20 of FabricBond on ethereum: ( txhash: %s )\n", hash.String())
 	}
 }
 
