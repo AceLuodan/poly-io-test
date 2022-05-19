@@ -19,10 +19,11 @@ package config
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/polynetwork/poly-io-test/log"
 	"io/ioutil"
 	"os"
+
+	"github.com/btcsuite/btcd/chaincfg"
+	"github.com/polynetwork/poly-io-test/log"
 )
 
 const (
@@ -165,6 +166,7 @@ type TestConfig struct {
 
 	// fabric
 	FabricPEth      string
+	FabricBond      string
 	FabricCCM       string
 	FabricLockProxy string
 

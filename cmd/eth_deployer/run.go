@@ -93,7 +93,7 @@ func DeployETHSmartContract() {
 		panic(err)
 	}
 
-	lockproxyAddrHex := lockProxyAddr.Hex()
+	// lockproxyAddrHex := lockProxyAddr.Hex()
 	erc20Addr, erc20, err := invoker.DeployERC20()
 	if err != nil {
 		panic(err)
@@ -278,7 +278,7 @@ func SetupETH(ethInvoker *eth.EInvoker) {
 		hash := tx.Hash()
 		fmt.Printf("binding eth of FabricPEth on ethereum: ( txhash: %s )\n", hash.String())
 	}
-	
+
 	if config.DefConfig.FabricBond != "" {
 		tx, err := ethInvoker.BindAssetHash(config.DefConfig.EthLockProxy, config.DefConfig.EthErc20, config.DefConfig.FabricBond, config.DefConfig.FabricChainID, 0)
 		if err != nil {
