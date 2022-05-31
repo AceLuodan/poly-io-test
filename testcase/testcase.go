@@ -1322,7 +1322,8 @@ func EthToFabric(ctx *testframework.TestFrameworkContext, status *testframework.
 		panic(err)
 	}
 	for i := uint64(0); i < config.DefConfig.BatchTxNum; i++ {
-		amt := GetRandAmount(100000, 1)
+		// amt := GetRandAmount(100000, 1)
+		amt := uint64(100000)
 		for j := uint64(0); j < config.DefConfig.TxNumPerBatch; j++ {
 			if err := SendEthCrossFabric(ctx, status, amt, toAcc); err != nil {
 				log.Errorf("EthFabricCircle, SendEthCrossFabric error: %v", err)
@@ -1344,7 +1345,8 @@ func FabricToEthTo(ctx *testframework.TestFrameworkContext, status *testframewor
 	// 	panic(err)
 	// }
 	for i := uint64(0); i < config.DefConfig.BatchTxNum; i++ {
-		amt := GetRandAmount(100000, 1)
+		// amt := GetRandAmount(100000, 1)
+		amt := uint64(100000)
 
 		for j := uint64(0); j < config.DefConfig.TxNumPerBatch; j++ {
 			if err := SendFabricEthCrossEthereum(ctx, status, amt); err != nil {
