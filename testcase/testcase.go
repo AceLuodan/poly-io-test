@@ -18,10 +18,11 @@ package testcase
 
 import (
 	"encoding/hex"
+	"time"
+
 	"github.com/polynetwork/poly-io-test/config"
 	"github.com/polynetwork/poly-io-test/log"
 	"github.com/polynetwork/poly-io-test/testframework"
-	"time"
 )
 
 func SendOntToEthChain(ctx *testframework.TestFrameworkContext, status *testframework.CaseStatus) bool {
@@ -1309,6 +1310,51 @@ func EthFabricCircle(ctx *testframework.TestFrameworkContext, status *testframew
 		log.Infof("EthFabricCircle, send %d eth from fabric to Ethereum, waiting for confirmation...", amt)
 		WaitUntilClean(status)
 		log.Infof("EthFabricCircle, eth all received ( batch: %d )", i)
+	}
+
+	status.SetItSuccess(1)
+	return true
+}
+
+func EthToFabric(ctx *testframework.TestFrameworkContext, status *testframework.CaseStatus) bool {
+	toAcc, err := hex.DecodeString(config.DefConfig.FabricAccAddr)
+	if err != nil {
+		panic(err)
+	}
+	for i := uint64(0); i < config.DefConfig.BatchTxNum; i++ {
+		amt := GetRandAmount(config.DefConfig.EthValLimit, 1)
+		for j := uint64(0); j < config.DefConfig.TxNumPerBatch; j++ {
+			if err := SendEthCrossFabric(ctx, status, amt, toAcc); err != nil {
+				log.Errorf("EthFabricCircle, SendEthCrossFabric error: %v", err)
+				return false
+			}
+		}
+		log.Infof("EthToFabric, send %d eth to Fabric, waiting for confirmation...", amt)
+		WaitUntilClean(status)
+
+	}
+
+	status.SetItSuccess(1)
+	return true
+}
+
+func FabricToEthTo(ctx *testframework.TestFrameworkContext, status *testframework.CaseStatus) bool {
+	// toAcc, err := hex.DecodeString(config.DefConfig.FabricAccAddr)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	for i := uint64(0); i < config.DefConfig.BatchTxNum; i++ {
+		amt := GetRandAmount(config.DefConfig.EthValLimit, 1)
+
+		for j := uint64(0); j < config.DefConfig.TxNumPerBatch; j++ {
+			if err := SendFabricEthCrossEthereum(ctx, status, amt); err != nil {
+				log.Errorf("EthFabricCircle, SendFabricEthCrossEthereum error: %v", err)
+				return false
+			}
+		}
+		log.Infof("EthFabricCircle11, send %d eth from fabric to Ethereum, waiting for confirmation...", amt)
+		WaitUntilClean(status)
+		log.Infof("EthFabricCircle11, eth all received ( batch: %d )", i)
 	}
 
 	status.SetItSuccess(1)

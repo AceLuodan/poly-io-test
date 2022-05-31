@@ -86,6 +86,9 @@ func init() {
 
 	// testframework.TFramework.RegTestCase("EthFiscoCircle", EthFiscoCircle)
 	testframework.TFramework.RegTestCase("EthFabricCircle", EthFabricCircle)
+	testframework.TFramework.RegTestCase("EthToFabric", EthFabricCircle)
+	testframework.TFramework.RegTestCase("FabricToEthTo", EthFabricCircle)
+
 	// testframework.TFramework.RegTestCase("EthCircleBetweenEthereumFabricFisco", EthCircleBetweenEthereumFabricFisco)
 	// testframework.TFramework.RegTestCase("FiscoCircle", FiscoCircle)
 }
